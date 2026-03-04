@@ -1,16 +1,14 @@
 // src/db/database.js
-const sqlite3 = require('sqlite3').verbose();
+const Database = require("better-sqlite3");
 const path = require('path');
 require('dotenv').config();
 
 const DB_PATH = process.env.DB_PATH || './database.sqlite';
-const db = new sqlite3.Database(path.resolve(DB_PATH));
+const db = new Database(path.resolve(DB_PATH));
 
 // Enable WAL mode for better performance
-db.exec(`
-  PRAGMA journal_mode = WAL;
-  PRAGMA foreign_keys = ON;
-`);
+db.pragma("journal_mode = WAL");
+db.pragma("foreign_keys = ON");
 
 // ─── CREATE TABLES ─────────────────────────────────────────────
 db.exec(`
