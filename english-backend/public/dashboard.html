@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard – EnglishPath</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-layout">
+
+  <!-- ── SIDEBAR ── -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">🎓 GlobalTalk Academy</div>
+      <div class="logo-sub">Curriculum Manager</div>
+    </div>
+    <div class="sidebar-user">
+      <div class="user-name" id="user-name">...</div>
+      <div class="user-role" id="user-role">...</div>
+    </div>
+    <nav class="sidebar-nav" id="sidebar-nav">
+      <div class="nav-item active" data-section="overview"  onclick="nav('overview')">
+        <span class="nav-icon">📊</span> Tổng quan
+      </div>
+      <div class="nav-item" data-section="curriculum" onclick="nav('curriculum')">
+        <span class="nav-icon">📚</span> Giáo trình
+      </div>
+      <div class="nav-item teacher-only" data-section="students" onclick="nav('students')">
+        <span class="nav-icon">👥</span> Học viên
+      </div>
+      <div class="nav-item student-only" data-section="profile" onclick="nav('profile')">
+        <span class="nav-icon">👤</span> Hồ sơ
+      </div>
+      <div class="nav-item" data-section="progress" onclick="nav('progress')">
+        <span class="nav-icon">📈</span> Tiến độ
+      </div>
+      <div class="nav-item" data-section="assignments" onclick="nav('assignments')">
+        <span class="nav-icon">📝</span> Bài tập
+      </div>
+      <div class="nav-item" data-section="scores" onclick="nav('scores')">
+        <span class="nav-icon">🏆</span> Điểm số
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="btn-logout" onclick="utils.logout()">⬅ Đăng xuất</button>
+    </div>
+  </aside>
+
+  <!-- ── MAIN ── -->
+  <main class="main-content">
+
+    <!-- OVERVIEW -->
+    <section class="page-section active" id="sec-overview">
+      <div class="page-header">
+        <h1>Tổng quan</h1>
+        <p>Chào mừng trở lại, <span id="ov-name" class="text-gold"></span>!</p>
+      </div>
+      <div id="overview-content"></div>
+    </section>
+
+    <!-- CURRICULUM -->
+    <section class="page-section" id="sec-curriculum">
+      <div class="page-header flex-between">
+        <div>
+          <h1>Giáo trình</h1>
+          <p>Chương trình 3 tháng – 12 tuần học</p>
+        </div>
+      </div>
+      <div id="curriculum-content"></div>
+    </section>
+
+    <!-- STUDENTS (teacher) -->
+    <section class="page-section" id="sec-students">
+      <div class="page-header">
+        <h1>Danh sách học viên</h1>
+        <p>Quản lý và theo dõi toàn bộ học viên</p>
+      </div>
+      <div id="students-content"></div>
+    </section>
+
+    <!-- PROFILE (student) -->
+    <section class="page-section" id="sec-profile">
+      <div class="page-header">
+        <h1>Hồ sơ cá nhân</h1>
+        <p>Thông tin và mục tiêu học tập của bạn</p>
+      </div>
+      <div id="profile-content"></div>
+    </section>
+
+    <!-- PROGRESS -->
+    <section class="page-section" id="sec-progress">
+      <div class="page-header flex-between">
+        <div>
+          <h1>Tiến độ học tập</h1>
+          <p>Theo dõi hoàn thành từng tuần</p>
+        </div>
+        <div id="progress-student-selector"></div>
+      </div>
+      <div id="progress-content"></div>
+    </section>
+
+    <!-- ASSIGNMENTS -->
+    <section class="page-section" id="sec-assignments">
+      <div class="page-header flex-between">
+        <div>
+          <h1>Bài tập</h1>
+          <p>Danh sách bài tập & trạng thái</p>
+        </div>
+        <button class="btn btn-primary teacher-only" onclick="openCreateAssignment()">＋ Tạo bài tập</button>
+      </div>
+      <div id="assignments-content"></div>
+    </section>
+
+    <!-- SCORES -->
+    <section class="page-section" id="sec-scores">
+      <div class="page-header flex-between">
+        <div>
+          <h1>Báo cáo điểm số</h1>
+          <p>Tổng hợp kết quả học tập</p>
+        </div>
+        <div id="scores-student-selector"></div>
+      </div>
+      <div id="scores-content"></div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ── MODAL: Week Progress ── -->
+<div class="modal-overlay" id="modal-progress">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Cập nhật tiến độ</h3>
+      <button class="modal-close" onclick="closeModal('modal-progress')">✕</button>
+    </div>
+    <div id="modal-progress-body"></div>
+  </div>
+</div>
+
+<!-- ── MODAL: Create Assignment ── -->
+<div class="modal-overlay" id="modal-assignment">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Tạo bài tập mới</h3>
+      <button class="modal-close" onclick="closeModal('modal-assignment')">✕</button>
+    </div>
+    <div id="modal-assignment-body"></div>
+  </div>
+</div>
+
+<!-- ── MODAL: Grade Assignment ── -->
+<div class="modal-overlay" id="modal-grade">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Chấm điểm bài tập</h3>
+      <button class="modal-close" onclick="closeModal('modal-grade')">✕</button>
+    </div>
+    <div id="modal-grade-body"></div>
+  </div>
+</div>
+
+<!-- ── MODAL: Submit Assignment ── -->
+<div class="modal-overlay" id="modal-submit">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Nộp bài tập</h3>
+      <button class="modal-close" onclick="closeModal('modal-submit')">✕</button>
+    </div>
+    <div id="modal-submit-body"></div>
+  </div>
+</div>
+
+<!-- ── MODAL: Student Detail ── -->
+<div class="modal-overlay" id="modal-student">
+  <div class="modal" style="max-width:600px">
+    <div class="modal-header">
+      <h3>Chi tiết học viên</h3>
+      <button class="modal-close" onclick="closeModal('modal-student')">✕</button>
+    </div>
+    <div id="modal-student-body"></div>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/students-progress.js"></script>
+<script src="js/assignments-scores.js"></script>
+</body>
+</html>
