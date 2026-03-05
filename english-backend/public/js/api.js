@@ -19,7 +19,7 @@ const api = {
 
     let res;
     try {
-      res = await fetch(/api/auth/login);
+      res = await fetch(BASE_URL + path, opts);
     } catch (e) {
       throw new Error("Không thể kết nối server. Hãy chắc chắn backend đang chạy tại " + BASE_URL);
     }
