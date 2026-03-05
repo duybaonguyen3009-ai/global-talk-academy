@@ -1,5 +1,5 @@
 // js/api.js  –  Central API client
-const BASE_URL = "http://localhost:3000";
+const BASE_URL = "";
 
 const api = {
   _token() {
@@ -19,7 +19,7 @@ const api = {
 
     let res;
     try {
-      res = await fetch(BASE_URL + path, opts);
+      res = await fetch(/api/auth/login);
     } catch (e) {
       throw new Error("Không thể kết nối server. Hãy chắc chắn backend đang chạy tại " + BASE_URL);
     }
