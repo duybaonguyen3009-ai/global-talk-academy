@@ -1,5 +1,5 @@
 // js/api.js  –  Central API client
-const BASE_URL = "";
+const BASE_URL = window.location.origin;
 
 const api = {
   _token() {
